@@ -47,7 +47,7 @@
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link" href="#">More Tutorials</a>
           <div class="navbar-dropdown">
-            <a class="navbar-item" href="https://redhat-scholars.github.io/outer-loop-guides/" target="_blank">Outer Loop</a>
+            <a class="navbar-item" href="https://redhat-scholars.github.io/outer-loop-guide/" target="_blank">Outer Loop</a>
             <a class="navbar-item" href="https://redhat-scholars.github.io/openshift-starter-guides/" target="_blank">OpenShift Starter</a>
             <a class="navbar-item" href="https://redhat-scholars.github.io/kubernetes-tutorial/" target="_blank">Kubernetes</a>
             <a class="navbar-item" href="https://redhat-scholars.github.io/istio-tutorial/" target="_blank">Istio</a>
@@ -407,23 +407,16 @@ kubectl describe $PODNAME</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Delete the deployment:</p>
-</div>
-<div id="delete-deployment-limit-resource" class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl delete -f apps/kubefiles/myboot-deployment-resources.yml</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Create a new deployment with a more sane resource request and a hard limit:</p>
+<p>We should fix the deployment while keeping a history of changes done by <code>replace</code>:</p>
 </div>
 <div id="apply-deployment-sane-limit-resource" class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl apply -f apps/kubefiles/myboot-deployment-resources-limits.yml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl replace -f apps/kubefiles/myboot-deployment-resources-limits.yml</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Describe the Pod:</p>
+<p>The above command will replace the Deployment template and instruct the Pod to have container limits.
+Describe the Pod:</p>
 </div>
 <div id="resource-soft-limit-kubectl-describe-services" class="listingblock console-input">
 <div class="content">
@@ -542,7 +535,7 @@ The reported memory vs what was set in the resource limits
 <div id="podresources-sane-limit-resource" class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">PODNAME=$(kubectl get pod -l app=myboot -o name)
-kubectl get $PODNAME -o json | jq ".spec.containers[0].resources"</code></pre>
+kubectl get $PODNAME -o jsonpath='{.spec.containers[*].resources}'</code></pre>
 </div>
 </div>
 <div class="listingblock console-output">
@@ -602,7 +595,7 @@ kubectl describe $PODNAME</code></pre>
 </div>
 <div id="terminated-pod-resource" class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl get $PODNAME -o json | jq ".status.containerStatuses[0].lastState.terminated"</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"> kubectl get $PODNAME -o jsonpath='{.status.containerStatuses[0].lastState.terminated'}</code></pre>
 </div>
 </div>
 <div class="listingblock console-output">

@@ -47,7 +47,7 @@
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link" href="#">More Tutorials</a>
           <div class="navbar-dropdown">
-            <a class="navbar-item" href="https://redhat-scholars.github.io/outer-loop-guides/" target="_blank">Outer Loop</a>
+            <a class="navbar-item" href="https://redhat-scholars.github.io/outer-loop-guide/" target="_blank">Outer Loop</a>
             <a class="navbar-item" href="https://redhat-scholars.github.io/openshift-starter-guides/" target="_blank">OpenShift Starter</a>
             <a class="navbar-item" href="https://redhat-scholars.github.io/kubernetes-tutorial/" target="_blank">Kubernetes</a>
             <a class="navbar-item" href="https://redhat-scholars.github.io/istio-tutorial/" target="_blank">Istio</a>
@@ -217,11 +217,19 @@
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl config set-context --current --namespace=myspace</code></pre>
 </div>
 </div>
-<div class="sidebarblock">
-<div class="content">
-<div class="title">TIP</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
 <div class="paragraph">
 <p>If you just came from <a href="resources.html" class="page" target="_blank" rel="noopener">the Resources and Limits section</a> then you should already have the pods and deployments active that you need.  If not, you will need run the following commands to deploy the needed elements into myspace</p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>Deploy the Spring Boot app if needed:</p>
@@ -312,10 +320,8 @@ sleep 0.8
 done</code></pre>
 </div>
 </div>
-</div>
-</div>
 <div class="paragraph">
-<p><strong>Terminal 3</strong>: Run commands.</p>
+<p><strong>Terminal 3</strong> : Run commands.</p>
 </div>
 <div class="paragraph">
 <p>Describe (or <code>kubectl edit</code>) the Deployment:</p>
@@ -523,11 +529,19 @@ Events:
 </div>
 </div>
 <div class="paragraph">
-<p>Rollback to v1:</p>
+<p>You can list the revisions associated to your deployment by running the following command:</p>
+</div>
+<div id="rollout-history" class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl rollout history deployment/myboot</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can rollback to v1 using the following command:</p>
 </div>
 <div id="describe-rollback-rolling" class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl set image deployment myboot myboot=quay.io/rhdevelopers/myboot:v1</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kubectl rollout undo deployment/myboot --to-revision=1</code></pre>
 </div>
 </div>
 <div class="paragraph">

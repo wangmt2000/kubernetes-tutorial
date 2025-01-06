@@ -47,7 +47,7 @@
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link" href="#">More Tutorials</a>
           <div class="navbar-dropdown">
-            <a class="navbar-item" href="https://redhat-scholars.github.io/outer-loop-guides/" target="_blank">Outer Loop</a>
+            <a class="navbar-item" href="https://redhat-scholars.github.io/outer-loop-guide/" target="_blank">Outer Loop</a>
             <a class="navbar-item" href="https://redhat-scholars.github.io/openshift-starter-guides/" target="_blank">OpenShift Starter</a>
             <a class="navbar-item" href="https://redhat-scholars.github.io/kubernetes-tutorial/" target="_blank">Kubernetes</a>
             <a class="navbar-item" href="https://redhat-scholars.github.io/istio-tutorial/" target="_blank">Istio</a>
@@ -296,15 +296,15 @@ spec:
 EOF</code></pre>
 </div>
 </div>
-<div id="services-kubectl-watch-services" class="listingblock console-input">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">watch kubectl get services</code></pre>
 </div>
 </div>
 <div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME    TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
-myapp   LoadBalancer   172.30.103.41   &lt;pending&gt;     8080:31974/TCP   4s</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME          TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+the-service   LoadBalancer   172.30.103.41   &lt;pending&gt;     80:31974/TCP     4s</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -414,7 +414,7 @@ If you are in AWS, you need to get the <code>hostname</code> instead of <code>ip
 <div id="create-ingress" class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF | kubectl apply -f -
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: myingress
@@ -424,9 +424,12 @@ spec:
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: the-service
-          servicePort: 80
+          service:
+            name: the-service
+            port:
+              number: 80
 EOF</code></pre>
 </div>
 </div>

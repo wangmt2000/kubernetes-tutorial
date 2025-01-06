@@ -47,7 +47,7 @@
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link" href="#">More Tutorials</a>
           <div class="navbar-dropdown">
-            <a class="navbar-item" href="https://redhat-scholars.github.io/outer-loop-guides/" target="_blank">Outer Loop</a>
+            <a class="navbar-item" href="https://redhat-scholars.github.io/outer-loop-guide/" target="_blank">Outer Loop</a>
             <a class="navbar-item" href="https://redhat-scholars.github.io/openshift-starter-guides/" target="_blank">OpenShift Starter</a>
             <a class="navbar-item" href="https://redhat-scholars.github.io/kubernetes-tutorial/" target="_blank">Kubernetes</a>
             <a class="navbar-item" href="https://redhat-scholars.github.io/istio-tutorial/" target="_blank">Istio</a>
@@ -213,7 +213,7 @@
 <div class="sectionbody">
 <div class="paragraph">
 <p>A <code>StatefulSet</code> provides a unique identity to the Pods that they manage.
-<code>StatefulSet</code> s are particularly useful when your application requires a unique network identifier or persistence storage across Pod (re)scheduling or when your application needs some guarantee about the ordering of deployment and scaling.</p>
+<code>StatefulSet</code> s are particularly useful when your application requires a unique network identifier or persistent storage across Pod (re)scheduling or when your application needs some guarantee about the ordering of deployment and scaling.</p>
 </div>
 <div class="paragraph">
 <p>One of the most typical examples of using <code>StatefulSet</code> s is when one needs to deploy primary/secondary servers (i.e database cluster) where you need to know beforehand the hostname of each of the servers to start the cluster.
@@ -360,6 +360,9 @@ metadata:
 spec:
   serviceName: "quarkus" <i class="conum" data-value="1"></i><b>(1)</b>
   replicas: 2
+  selector:
+    matchLabels:
+      app: quarkus-statefulset
   template:
     metadata:
       labels:
@@ -716,7 +719,18 @@ Annotations:  &lt;none&gt;</code></pre>
 <div class="listingblock console-output">
 <div class="title">quarkus-statefulset-external-svc.yaml</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">Unresolved include directive in modules/ROOT/pages/statefulset.adoc - include::example$quarkus-statefulset-external-svc.yaml[]</code></pre>
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: quarkus-statefulset-2
+spec:
+  type: LoadBalancer <i class="conum" data-value="1"></i><b>(1)</b>
+  externalTrafficPolicy: Local <i class="conum" data-value="2"></i><b>(2)</b>
+  selector:
+    statefulset.kubernetes.io/pod-name: quarkus-statefulset-2 <i class="conum" data-value="3"></i><b>(3)</b>
+  ports:
+  - port: 8080
+    name: web</code></pre>
 </div>
 </div>
 <div class="colist arabic">

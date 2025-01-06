@@ -47,7 +47,7 @@
         <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link" href="#">More Tutorials</a>
           <div class="navbar-dropdown">
-            <a class="navbar-item" href="https://redhat-scholars.github.io/outer-loop-guides/" target="_blank">Outer Loop</a>
+            <a class="navbar-item" href="https://redhat-scholars.github.io/outer-loop-guide/" target="_blank">Outer Loop</a>
             <a class="navbar-item" href="https://redhat-scholars.github.io/openshift-starter-guides/" target="_blank">OpenShift Starter</a>
             <a class="navbar-item" href="https://redhat-scholars.github.io/kubernetes-tutorial/" target="_blank">Kubernetes</a>
             <a class="navbar-item" href="https://redhat-scholars.github.io/istio-tutorial/" target="_blank">Istio</a>
@@ -474,7 +474,44 @@ cloudcredentials.operator.openshift.io                            2021-07-12T01:
 <div class="listingblock">
 <div class="title">pizza-crd.yaml</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">Unresolved include directive in modules/ROOT/pages/crds.adoc - include::example$pizza-crd.yaml[]</code></pre>
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: pizzas.mykubernetes.acme.org
+  labels:
+    app: pizzamaker
+    mylabel: stuff
+spec:
+  group: mykubernetes.acme.org
+  scope: Namespaced
+  versions:
+  - name: v1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        description: "A custom resource for making yummy pizzas" <i class="conum" data-value="1"></i><b>(1)</b>
+        type: object
+        properties:
+          spec:
+            type: object
+            description: "Information about our pizza"
+            properties:
+              toppings: <i class="conum" data-value="2"></i><b>(2)</b>
+                type: array
+                items:
+                  type: string
+                description: "List of toppings for our pizza"
+              sauce: <i class="conum" data-value="3"></i><b>(3)</b>
+                type: string
+                description: "The name of the sauce to use on our pizza"
+  names:
+    kind: Pizza <i class="conum" data-value="4"></i><b>(4)</b>
+    listKind: PizzaList
+    plural: pizzas
+    singular: pizza
+    shortNames:
+    - pz</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -777,7 +814,7 @@ quarkus-operator-example-5f5bf777bc-glfg9   1/1     Running   0          58s</co
 </div>
 <div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">Unresolved include directive in modules/ROOT/pages/crds.adoc - include::example$cheese-pizza.yaml[]</code></pre>
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -909,7 +946,17 @@ cheesep-pod pizza-maker 2021-07-19 08:16:26,615 INFO  [io.quarkus] (main) pizza-
 <div class="listingblock console-output">
 <div class="title">meat-pizza.yaml</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">Unresolved include directive in modules/ROOT/pages/crds.adoc - include::example$meat-pizza.yaml[]</code></pre>
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: mykubernetes.acme.org/v1
+kind: Pizza
+metadata:
+  name: meatsp
+spec:
+  toppings:
+  - mozzarella
+  - pepperoni
+  - sausage
+  - bacon
+  sauce: extra</code></pre>
 </div>
 </div>
 <div class="paragraph">
